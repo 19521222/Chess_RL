@@ -19,7 +19,7 @@ class ALPHA():
         #self.device = 'cpu' 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         print(self.device)
-        self.path = "best_policy.model"
+        self.path = "/content/Chess_RL/best_policy.model"
         
         self.num_epoches     = 100
         self.train_iteration = 500
@@ -84,7 +84,7 @@ class VALIDATION():
     def __init__(self):
         #self.device = 'cpu' 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        self.path = "best_policy.model"
+        self.path = "/content/Chess_RL/best_policy.model"
         
         self.mcts_iteration = 100
         self.learning_rate  = 0.001
