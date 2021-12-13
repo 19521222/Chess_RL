@@ -40,6 +40,3 @@ class CHESS_READ():
         else:
             move = str(move)
         return self.action_space.index(move)
-
-r = CHESS_READ()
-print(r.read_state(chess.Board()))
