@@ -28,9 +28,9 @@ class ALPHA():
         
         self.Chess_read = CHESS_READ()
         self.NN         = NEURAL_NETWORK(self.learning_rate, self.path, self.device)
-        if self.path:
-            self.NN.load_model()
-            print('Model loaded')
+        #if self.path:
+        #    self.NN.load_model()
+        #    print('Model loaded')
         
         self.mcts_tree  = MCTS(self.mcts_iteration, self.NN, self.Chess_read, self.device)   # iteration length; Neural network; Chess read
                 
