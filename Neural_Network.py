@@ -91,8 +91,8 @@ class NEURAL_NETWORK():
         
         # calculate by policy network
         act_probs, value = self.policy_net(state_opt)
-        if torch.isnan(act_probs, value):
-            print('Prob or Val Nan Detected', act_probs, value)
+        if torch.isnan(value):
+            print('Prob or Val Nan Detected', value)
 
         # minimizes the square error between the actual outcome of a game played, and the prediction of the winner from the neural network at each time step.
         value_loss       = F.mse_loss(value.view(-1), winner_opt)
