@@ -91,12 +91,12 @@ class NEURAL_NETWORK():
         
         # calculate by policy network
         act_probs, value = self.policy_net(state_opt)
-        if torch.isnan(value):
+        if torch.isnan(value).any():
             print('Prob or Val Nan Detected', value)
 
         # minimizes the square error between the actual outcome of a game played, and the prediction of the winner from the neural network at each time step.
         value_loss       = F.mse_loss(value.view(-1), winner_opt)
-        if torch.isnan(value_loss):
+        if torch.isnan(value_loss).any():
             print('Val Loss Nan Detected', value.view(-1), winner_opt)
             
         # make the following two probability distributions match, 
@@ -104,7 +104,7 @@ class NEURAL_NETWORK():
         # The probability distribution determined by the MCTS for the probability of taking each action at time t in state s.
         policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(act_probs)), 1))
 	
-        if torch.isnan(policy_loss):
+        if torch.isnan(policy_loss).any():
             print('Policy Loss Nan Detected', act_probs, probability_opt, torch.log(act_probs), torch.sum(probability_opt*(torch.log(act_probs)), 1))
 	
         loss             = value_loss + policy_loss
@@ -117,7 +117,7 @@ class NEURAL_NETWORK():
                 L2_reg = L2_reg + torch.norm(param, 2)
         loss += self.L2_lambda * L2_reg
 	
-        if torch.isnan(loss):
+        if torch.isnan(loss).any():
             print('Val Loss Nan Detected', L2_reg)
 	
         loss.backward()
