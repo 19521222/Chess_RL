@@ -34,8 +34,8 @@ class ALPHA():
         
         self.mcts_tree  = MCTS(self.mcts_iteration, self.NN, self.Chess_read, self.device)   # iteration length; Neural network; Chess read
                 
-        self.engine      = chess.engine.SimpleEngine.popen_uci(r"\content\Chess_RL\stockfish_14_x64_avx2.exe")
-        self.stockfish_flag = True
+        #self.engine      = chess.engine.SimpleEngine.popen_uci(r"\content\Chess_RL\stockfish_14_x64_avx2.exe")
+        self.stockfish_flag = False
         
     def training(self): 
         for epoch in range(self.num_epoches):
