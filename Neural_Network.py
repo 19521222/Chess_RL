@@ -88,13 +88,11 @@ class NEURAL_NETWORK():
         state_opt        = Variable(torch.Tensor(np.array(state))).to(self.device)
         probability_opt  = Variable(torch.Tensor(np.array(probability))).to(self.device)
         winner_opt       = Variable(torch.Tensor(np.array(winner))).to(self.device)
-	
-        if torch.isnan(state_opt).any() or torch.isnan(probability_opt).any() or torch.isnan(winner_opt).any():
-            print('Input Nan Detected', torch.isnan(state_opt).any(), torch.isnan(probability_opt).any(), torch.isnan(winner_opt).any())
-            return Variable(torch.Tensor(np.array(self.best_loss))).to(self.device)
         
 	# calculate by policy network
         act_probs, value = self.policy_net(state_opt)
+	if torch.isnan(act_probs).any():
+            print('Prob or Val Nan Detected', act_probs)
         if torch.isnan(value).any():
             print('Prob or Val Nan Detected', value)
 
@@ -109,7 +107,7 @@ class NEURAL_NETWORK():
         policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(act_probs)), 1))
 	
         if torch.isnan(policy_loss).any():
-            print('Policy Loss Nan Detected', act_probs.item())
+            print('Policy Loss Nan Detected', torch.isnan(torch.log(act_probs)).any(), torch.isnan(probability_opt*(torch.log(act_probs))).any())
 	
         loss             = value_loss + policy_loss
         self.optimizer.zero_grad()
