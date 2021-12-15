@@ -79,6 +79,7 @@ class ALPHA():
             for itr in range(self.train_iteration):
                 loss = self.NN.optimize_model(buffer)
                 print("Epoch: %d/%d, Iter: %d/%d, loss: %1.12f" % (epoch + 1, self.num_epoches, itr + 1, self.train_iteration, loss.item()))
+            self.NN.permantly_save()
 
 class VALIDATION():
     def __init__(self):
