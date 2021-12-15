@@ -6,7 +6,6 @@ Date: 		18 Nov 2020
 '''
 from math import nan
 import numpy as np
-from numpy.core.numeric import NaN
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -105,7 +104,7 @@ class NEURAL_NETWORK():
         policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(act_probs)), 1))
 	
         if torch.isnan(policy_loss).any():
-            print('Policy Loss Nan Detected', act_probs, probability_opt, torch.log(act_probs), torch.sum(probability_opt*(torch.log(act_probs)), 1))
+            print('Policy Loss Nan Detected', act_probs.item())
 	
         loss             = value_loss + policy_loss
         self.optimizer.zero_grad()
