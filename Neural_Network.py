@@ -87,8 +87,12 @@ class NEURAL_NETWORK():
         state_opt        = Variable(torch.Tensor(np.array(state))).to(self.device)
         probability_opt  = Variable(torch.Tensor(np.array(probability))).to(self.device)
         winner_opt       = Variable(torch.Tensor(np.array(winner))).to(self.device)
+	
+        if torch.isnan(state_opt).any() or torch.isnan(probability_opt).any() or torch.isnan(winner_opt).any():
+            print('Input Nan Detected', torch.isnan(state_opt).any(), torch.isnan(probability_opt).any(), torch.isnan(winner_opt).any())
+            return Variable(torch.Tensor(np.array(self.best_loss))).to(self.device)
         
-        # calculate by policy network
+	# calculate by policy network
         act_probs, value = self.policy_net(state_opt)
         if torch.isnan(value).any():
             print('Prob or Val Nan Detected', value)
