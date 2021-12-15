@@ -77,7 +77,7 @@ class NEURAL_NETWORK():
         self.optimizer     = torch.optim.Adam(self.policy_net.parameters(), lr=self.learning_rate)
         
         self.best_loss     = 99999999999 # initial threshold to save model
-	self.model_cahe    = (0, 0, 0)
+        self.model_cache   = None
         self.L2_lambda     = 0.00001
 
     def optimize_model(self, buffer):
@@ -141,12 +141,12 @@ class NEURAL_NETWORK():
             self.best_loss = loss.item()
 		
     def permantly_save(self):
-	print('Permantly Save Less-Loss Model')
-	torch.save({
-                    'model_state_dict': self.model_cache[0],
-                    'optimizer_state_dict': self.model_cache[1],
-                    'loss': self.model_cache[2],
-        }, self.path)
+        print('Permantly Save Less-Loss Model')
+        torch.save({
+                        'model_state_dict': self.model_cache[0],
+                        'optimizer_state_dict': self.model_cache[1],
+                        'loss': self.model_cache[2],
+            }, self.path)
 	
     def load_model(self): 
         if self.device == "cpu":
