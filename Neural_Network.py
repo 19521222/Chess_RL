@@ -111,7 +111,7 @@ class NEURAL_NETWORK():
         policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(act_probs)), 1))
 	
         if torch.isnan(policy_loss).any():
-            print('Policy Loss Nan Detected', torch.isnan(torch.log(act_probs)).any(), torch.isnan(torch.sum(probability_opt*(torch.log(act_probs)), 1)).any())
+            print('Policy Loss Nan Detected', torch.isnan(probability_opt*(torch.log(act_probs))).any(), torch.isnan(torch.sum(probability_opt*(torch.log(act_probs)), 1)).any())
 	
         loss             = value_loss + policy_loss
         self.optimizer.zero_grad()
