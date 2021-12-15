@@ -77,7 +77,7 @@ class NEURAL_NETWORK():
         self.optimizer     = torch.optim.Adam(self.policy_net.parameters(), lr=self.learning_rate)
         
         self.best_loss     = 99999999999 # initial threshold to save model
-        self.model_cache   = None
+        self.model_cache   = (0, 0, 0)
         self.L2_lambda     = 0.00001
 
     def optimize_model(self, buffer):
