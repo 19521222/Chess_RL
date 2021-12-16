@@ -144,7 +144,8 @@ class NEURAL_NETWORK():
 		
     def permantly_save(self):
         print('Permantly Save Less-Loss Model')
-	print('Less-Loss: ', self.model_cache[2])
+        print('Less-Loss: ', self.model_cache[2])
+        print('Best Loss: ', self.best_loss)
         torch.save({
                         'model_state_dict': self.model_cache[0],
                         'optimizer_state_dict': self.model_cache[1],
