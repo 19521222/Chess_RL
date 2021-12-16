@@ -80,7 +80,7 @@ class NEURAL_NETWORK():
         self.model_cache   = [0, 0, 0]
         self.L2_lambda     = 0.00001
 
-def optimize_model(self, buffer):
+    def optimize_model(self, buffer):
         torch.cuda.empty_cache()
         torch.autograd.set_detect_anomaly(True)
         # initialization
@@ -88,12 +88,12 @@ def optimize_model(self, buffer):
         state_opt        = Variable(torch.Tensor(np.array(state))).to(self.device)
         probability_opt  = Variable(torch.Tensor(np.array(probability))).to(self.device)
         winner_opt       = Variable(torch.Tensor(np.array(winner))).to(self.device)
-	
+
         if torch.isnan(state_opt).any() or torch.isnan(probability_opt).any() or torch.isnan(winner_opt).any():
             print('Input Nan Detected', torch.isnan(state_opt).any(), torch.isnan(probability_opt).any(), torch.isnan(winner_opt).any())
             return Variable(torch.Tensor(np.array(self.best_loss))).to(self.device)
-        
-	# calculate by policy network
+
+        # calculate by policy network
         act_probs, value = self.policy_net(state_opt)
         if torch.isnan(act_probs).any():
             print('Prob or Val Nan Detected', act_probs)
@@ -108,13 +108,13 @@ def optimize_model(self, buffer):
         # make the following two probability distributions match, 
         # The probability distribution output by the neural network for the state s at time step t; 
         # The probability distribution determined by the MCTS for the probability of taking each action at time t in state s.
-        #policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(torch.abs(act_probs))), 1)) 
+        # policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(torch.abs(act_probs))), 1)) 
         criterion = nn.CrossEntropyLoss()
         policy_loss = criterion(act_probs, probability_opt)
-	
+
         if torch.isnan(policy_loss).any():
             print('Policy Loss Nan Detected', torch.isnan(policy_loss), policy_loss)
-	
+
         loss             = value_loss + policy_loss
         self.optimizer.zero_grad()
 
@@ -123,20 +123,18 @@ def optimize_model(self, buffer):
         for name, param in self.policy_net.named_parameters():
             if 'weight' in name:
                 L2_reg = L2_reg + torch.norm(param, 2)
+
         loss += self.L2_lambda * L2_reg
-	
         if torch.isnan(loss).any():
             print('Val Loss Nan Detected', L2_reg)
-	
         loss.backward()
         for param in self.policy_net.parameters():
             param.grad.data.clamp_(-1, 1)
         self.optimizer.step()
-        
+
         self.save_model(loss)
-    
         return loss
-    
+
     def save_model(self, loss): 
         if loss.item() < self.best_loss:
             self.model_cache[0] = self.policy_net.state_dict().copy()
