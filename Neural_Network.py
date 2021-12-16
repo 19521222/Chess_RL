@@ -80,7 +80,7 @@ class NEURAL_NETWORK():
         self.model_cache   = [0, 0, 0]
         self.L2_lambda     = 0.00001
 
-    def optimize_model(self, buffer):
+def optimize_model(self, buffer):
         torch.cuda.empty_cache()
         torch.autograd.set_detect_anomaly(True)
         # initialization
@@ -108,8 +108,8 @@ class NEURAL_NETWORK():
         # make the following two probability distributions match, 
         # The probability distribution output by the neural network for the state s at time step t; 
         # The probability distribution determined by the MCTS for the probability of taking each action at time t in state s.
-	criterion = nn.CrossEntropyLoss()
         #policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(torch.abs(act_probs))), 1)) 
+        criterion = nn.CrossEntropyLoss()
         policy_loss = criterion(act_probs, probability_opt)
 	
         if torch.isnan(policy_loss).any():
