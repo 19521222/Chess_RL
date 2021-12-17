@@ -108,12 +108,11 @@ class NEURAL_NETWORK():
         # make the following two probability distributions match, 
         # The probability distribution output by the neural network for the state s at time step t; 
         # The probability distribution determined by the MCTS for the probability of taking each action at time t in state s.
-        # policy_loss      = - torch.mean(torch.sum(probability_opt*(torch.log(torch.abs(act_probs))), 1)) 
-        criterion = nn.CrossEntropyLoss()
-        policy_loss = criterion(act_probs, probability_opt)
+        cross_entropy    = torch.nan_to_num(torch.sum(probability_opt*(torch.log(torch.abs(act_probs))), 1))
+        policy_loss      = - torch.mean(cross_entropy) 
 
         if torch.isnan(policy_loss).any():
-            print('Policy Loss Nan Detected', torch.isnan(policy_loss), policy_loss)
+            print('Policy Loss Nan Detected', torch.isnan(cross_entropy), torch.isnan(policy_loss))
 
         loss             = value_loss + policy_loss
         self.optimizer.zero_grad()
