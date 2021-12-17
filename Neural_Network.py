@@ -95,6 +95,7 @@ class NEURAL_NETWORK():
 
         # calculate by policy network
         act_probs, value = self.policy_net(state_opt)
+        torch.save(act_probs, '/content/tensor.pt')
         if torch.isnan(act_probs).any():
             print('Prob or Val Nan Detected', act_probs)
         if torch.isnan(value).any():
