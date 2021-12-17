@@ -82,7 +82,7 @@ class NEURAL_NETWORK():
 
     def optimize_model(self, buffer):
         torch.cuda.empty_cache()
-        #torch.autograd.set_detect_anomaly(True)
+        torch.autograd.set_detect_anomaly(True)
         # initialization
         state, probability, winner = buffer
         state_opt        = Variable(torch.Tensor(np.array(state))).to(self.device)
@@ -125,7 +125,7 @@ class NEURAL_NETWORK():
 
         loss += self.L2_lambda * L2_reg
         if torch.isnan(loss).any():
-            print('Val Loss Nan Detected', loss)
+            print('Val Loss Nan Detected', loss, L2_reg)
         loss.backward()
         for param in self.policy_net.parameters():
             param.grad.data.clamp_(-1, 1)
