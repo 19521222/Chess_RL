@@ -125,7 +125,7 @@ class NEURAL_NETWORK():
 
         loss += self.L2_lambda * L2_reg
         if torch.isnan(loss).any():
-            print('Val Loss Nan Detected', L2_reg)
+            print('Val Loss Nan Detected', loss)
         loss.backward()
         for param in self.policy_net.parameters():
             param.grad.data.clamp_(-1, 1)
