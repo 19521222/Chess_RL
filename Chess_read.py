@@ -9,7 +9,7 @@ class CHESS_READ():
         self.piece        = ['.', 'K', 'Q', 'B', 'N', 'R', 'P', 'k', 'q', 'b', 'n', 'r', 'p']
         
         #actions
-        labels_array = []
+        self.action_space = []
         letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         numbers = ['1', '2', '3', '4', '5', '6', '7', '8']
         promoted_to = ['q', 'r', 'b', 'n']
@@ -30,21 +30,20 @@ class CHESS_READ():
                 for (l2, n2) in destinations:
                     if (l1, n1) != (l2, n2) and l2 in range(8) and n2 in range(8):
                         move = letters[l1] + numbers[n1] + letters[l2] + numbers[n2]
-                        labels_array.append(move)
+                        self.action_space.append(move)
         for l1 in range(8):
             l = letters[l1]
             for p in promoted_to:
-                labels_array.append(l + '2' + l + '1' + p)
-                labels_array.append(l + '7' + l + '8' + p)
+                self.action_space.append(l + '2' + l + '1' + p)
+                self.action_space.append(l + '7' + l + '8' + p)
                 if l1 > 0:
                     l_l = letters[l1 - 1]
-                    labels_array.append(l + '2' + l_l + '1' + p)
-                    labels_array.append(l + '7' + l_l + '8' + p)
+                    self.action_space.append(l + '2' + l_l + '1' + p)
+                    self.action_space.append(l + '7' + l_l + '8' + p)
                 if l1 < 7:
                     l_r = letters[l1 + 1]
-                    labels_array.append(l + '2' + l_r + '1' + p)
-                    labels_array.append(l + '7' + l_r + '8' + p)
-        self.action_space = labels_array
+                    self.action_space.append(l + '2' + l_r + '1' + p)
+                    self.action_space.append(l + '7' + l_r + '8' + p)
         
     def read_state(self, board):
         # convert board information from Chess into 8x8 numpy  
