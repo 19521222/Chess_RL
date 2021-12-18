@@ -59,4 +59,5 @@ class CHESS_READ():
         return chess.Move.from_uci(self.action_space[idx])
     
     def read_idx(self, move): 
+        move = str(move)
         return self.action_space.index(move)
