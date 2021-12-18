@@ -122,7 +122,7 @@ class MCTS():
             
     def play(self, curr_board, prev_action):
         node = self.node_list[str(curr_board), prev_action]
-        Pi   = np.zeros(8064)                             
+        Pi   = np.zeros(1968)                             
         if node.extended and node.N != 0:   
             # in play, once met a new node which was not extended in simulation, we would randomly choose an aciton and
             # extend this node. Its N is still zero. Next time, if we meet this node again, extended == True, but all N
@@ -130,7 +130,7 @@ class MCTS():
             for act in node.action:
                 node_tmp = node.child[act]         
                 idx = self.Chess_read.read_idx(act)
-                Pi[idx] += (node_tmp.N)**(1/self.temperature)     # +=: all promotion would add to promotion q
+                Pi[idx] = (node_tmp.N)**(1/self.temperature)     # +=: all promotion would add to promotion q
             Pi = np.divide(Pi, Pi.sum())
             idx_act = np.argmax(Pi)
             if round(sum(Pi),1) != 1.0:
