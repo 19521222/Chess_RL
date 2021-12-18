@@ -19,7 +19,7 @@ class ALPHA():
         #self.device = 'cpu' 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         print(self.device)
-        self.path = "/content/Chess_RL/best_policy.model"
+        self.path = "/content/drive/MyDrive/best_policy.model"
         
         self.num_epoches     = 100
         self.train_iteration = 500
@@ -28,9 +28,9 @@ class ALPHA():
         
         self.Chess_read = CHESS_READ()
         self.NN         = NEURAL_NETWORK(self.learning_rate, self.path, self.device)
-        #if self.path:
-        #    self.NN.load_model()
-        #    print('Model loaded')
+        if self.path:
+            self.NN.load_model()
+            print('Model loaded')
         
         self.mcts_tree  = MCTS(self.mcts_iteration, self.NN, self.Chess_read, self.device)   # iteration length; Neural network; Chess read
                 
@@ -68,6 +68,7 @@ class ALPHA():
                 propability.append(prob.copy())
 
                 board.push(move)
+		print(board)
                 move_count += 1
 
             f = lambda x: 1 if x == '1-0' else (0 if x == '0-1' else 0.5)
