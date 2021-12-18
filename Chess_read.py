@@ -1,9 +1,3 @@
-'''
-Authors: 	Yongyang Liu <liuyongyang@gatech.edu>
-			Xiyang Wu <xwu391@gatech.edu>
-			
-Date: 		18 Nov 2020
-'''
 import numpy as np
 import chess
 
@@ -15,11 +9,42 @@ class CHESS_READ():
         self.piece        = ['.', 'K', 'Q', 'B', 'N', 'R', 'P', 'k', 'q', 'b', 'n', 'r', 'p']
         
         #actions
-        square_x          = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        square_y          = ['1', '2', '3', '4', '5', '6', '7', '8']
-        promotion         = ['', 'q']    # ['', 'q', 'r', 'b', 'n']   only consider promotion q
-        self.action_space = [i+j+m+n+k for k in promotion for i in square_x for j in square_y for m in square_x for n in square_y if i+j != m+n]
+        labels_array = []
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        numbers = ['1', '2', '3', '4', '5', '6', '7', '8']
+        promoted_to = ['q', 'r', 'b', 'n']
 
+        for l1 in range(8):
+            for n1 in range(8):
+                #slide horizontal
+                #slide vertical
+                #slide 2 diagonal lines
+                #knight move
+                destinations = [
+                    (t, n1) for t in range(8)] + \
+                    [(l1, t) for t in range(8)] + \
+                    [(l1 + t, n1 + t) for t in range(-7, 8)] + \
+                    [(l1 + t, n1 - t) for t in range(-7, 8)] + \
+                    [(l1 + a, n1 + b) for (a, b) in [(-2, -1), (-1, -2), (-2, 1), (1, -2), (2, -1), (-1, 2), (2, 1), (1, 2)]
+                ]
+                for (l2, n2) in destinations:
+                    if (l1, n1) != (l2, n2) and l2 in range(8) and n2 in range(8):
+                        move = letters[l1] + numbers[n1] + letters[l2] + numbers[n2]
+                        labels_array.append(move)
+        for l1 in range(8):
+            l = letters[l1]
+            for p in promoted_to:
+                labels_array.append(l + '2' + l + '1' + p)
+                labels_array.append(l + '7' + l + '8' + p)
+                if l1 > 0:
+                    l_l = letters[l1 - 1]
+                    labels_array.append(l + '2' + l_l + '1' + p)
+                    labels_array.append(l + '7' + l_l + '8' + p)
+                if l1 < 7:
+                    l_r = letters[l1 + 1]
+                    labels_array.append(l + '2' + l_r + '1' + p)
+                    labels_array.append(l + '7' + l_r + '8' + p)
+        self.action_space = labels_array
         
     def read_state(self, board):
         # convert board information from Chess into 8x8 numpy  
@@ -35,8 +60,4 @@ class CHESS_READ():
         return chess.Move.from_uci(self.action_space[idx])
     
     def read_idx(self, move): 
-        if len(str(move)) > 4:
-            move = ''.join([char for char in str(move)][0:4]) + 'q' # only consider promotion q
-        else:
-            move = str(move)
         return self.action_space.index(move)
