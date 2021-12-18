@@ -68,6 +68,7 @@ class ALPHA():
                 propability.append(prob.copy())
 
                 board.push(move)
+		print(move.uci())
 		print(board)
                 move_count += 1
 
