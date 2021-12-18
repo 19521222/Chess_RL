@@ -12,7 +12,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 class CNN(nn.Module):
-    def __init__(self, in_channels = 13, num_actions = 8064):  #4032*2
+    def __init__(self, in_channels = 13, num_actions = 1968):  #4032*2
         super(CNN, self).__init__()
            
         self.in_channels   = in_channels
