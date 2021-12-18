@@ -68,8 +68,8 @@ class ALPHA():
                 propability.append(prob.copy())
 
                 board.push(move)
-		print(move.uci())
-		print(board)
+                print(move.uci())
+                print(board)
                 move_count += 1
 
             f = lambda x: 1 if x == '1-0' else (0 if x == '0-1' else 0.5)
